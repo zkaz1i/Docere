@@ -1,0 +1,473 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DOCERE – Teacher Portal</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  
+  body {
+    font-family: 'Inter', sans-serif;
+  }
+  
+  /* Smooth transitions */
+  .smooth-transition {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Custom scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgb(39 39 42);
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgb(82 82 91);
+    border-radius: 3px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgb(113 113 122);
+  }
+</style>
+</head>
+<body class="bg-zinc-950 min-h-screen text-zinc-100">
+
+<div class="container mx-auto px-4 py-8">
+  <!-- Header -->
+  <div class="max-w-6xl mx-auto bg-zinc-900 rounded-xl border border-zinc-800 p-6 shadow-md shadow-black/20">
+    <div class="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4">
+      <div>
+        <h2 class="text-2xl font-semibold text-zinc-100">Teacher Portal</h2>
+        <p id="userInfo" class="text-sm text-zinc-500 mt-1">Loading...</p>
+      </div>
+      <button id="logoutBtn" class="smooth-transition bg-zinc-800 hover:bg-zinc-700 text-zinc-100 font-medium py-2.5 px-6 rounded-lg border border-zinc-700 flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+        </svg>
+        Logout
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- Class Info -->
+      <div class="bg-zinc-800/50 p-5 rounded-xl border border-zinc-700">
+        <div class="flex items-center mb-4">
+          <div class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center mr-3">
+            <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-zinc-100">Class Information</h3>
+        </div>
+        <input id="className" placeholder="Enter Class (e.g. 10-A)" class="w-full p-3 bg-zinc-900 border border-zinc-700 rounded-lg mb-4 text-zinc-100 placeholder-zinc-500 focus:ring-1 focus:ring-indigo-500 focus:border-transparent">
+        <input type="number" id="strength" placeholder="Class Strength" class="w-full p-3 bg-zinc-900 border border-zinc-700 rounded-lg text-zinc-100 placeholder-zinc-500 focus:ring-1 focus:ring-indigo-500 focus:border-transparent">
+      </div>
+
+      <!-- Attendance -->
+      <div class="bg-zinc-800/50 p-5 rounded-xl border border-zinc-700">
+        <div class="flex items-center mb-4">
+          <div class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center mr-3">
+            <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-zinc-100">Attendance</h3>
+        </div>
+        <button id="attendanceBtn" class="smooth-transition w-full bg-indigo-600 hover:bg-indigo-700 text-zinc-100 font-medium py-3 px-4 rounded-lg mb-4">
+          Start Attendance (2 minutes)
+        </button>
+        <p id="timerDisplay" class="text-base font-medium mb-4 text-center text-indigo-300"></p>
+        
+        <div class="grid grid-cols-3 gap-3 mb-4">
+          <div class="bg-zinc-900 p-4 rounded-lg text-center border border-zinc-800">
+            <p class="text-xs text-zinc-500 mb-1">Total</p>
+            <p id="total" class="text-2xl font-semibold text-zinc-100">0</p>
+          </div>
+          <div class="bg-zinc-900 p-4 rounded-lg text-center border border-zinc-800">
+            <p class="text-xs text-zinc-500 mb-1">Present</p>
+            <p id="present" class="text-2xl font-semibold text-green-400">0</p>
+          </div>
+          <div class="bg-zinc-900 p-4 rounded-lg text-center border border-zinc-800">
+            <p class="text-xs text-zinc-500 mb-1">Absent</p>
+            <p id="absent" class="text-2xl font-semibold text-red-400">0</p>
+          </div>
+        </div>
+        
+        <div class="bg-zinc-900 p-3 rounded-lg border border-zinc-800 max-h-32 overflow-y-auto custom-scrollbar">
+          <p class="text-xs font-medium text-zinc-500 mb-2">PRESENT STUDENTS</p>
+          <ul id="presentList" class="text-sm space-y-1.5 text-zinc-300"></ul>
+        </div>
+      </div>
+
+      <!-- Submission -->
+      <div class="bg-zinc-800/50 p-5 rounded-xl border border-zinc-700">
+        <div class="flex items-center mb-4">
+          <div class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center mr-3">
+            <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-zinc-100">Work Submission</h3>
+        </div>
+        <textarea id="taskDescription" placeholder="Enter task description (e.g. Complete Chapter 5 exercises)" class="w-full p-3 bg-zinc-900 border border-zinc-700 rounded-lg mb-3 text-zinc-100 placeholder-zinc-500 focus:ring-1 focus:ring-indigo-500 focus:border-transparent" rows="2"></textarea>
+        <input type="date" id="deadline" class="w-full p-3 bg-zinc-900 border border-zinc-700 rounded-lg mb-3 text-zinc-100 focus:ring-1 focus:ring-indigo-500 focus:border-transparent">
+        <button id="btnSetDeadline" class="smooth-transition w-full bg-indigo-600 hover:bg-indigo-700 text-zinc-100 font-medium py-2.5 px-4 rounded-lg mb-4">
+          Set Deadline
+        </button>
+        
+        <div class="grid grid-cols-2 gap-3 mb-4">
+          <div class="bg-zinc-900 p-4 rounded-lg text-center border border-zinc-800">
+            <p class="text-xs text-zinc-500 mb-1">Submitted</p>
+            <p id="submitted" class="text-2xl font-semibold text-green-400">0</p>
+          </div>
+          <div class="bg-zinc-900 p-4 rounded-lg text-center border border-zinc-800">
+            <p class="text-xs text-zinc-500 mb-1">Pending</p>
+            <p id="notSubmitted" class="text-2xl font-semibold text-red-400">0</p>
+          </div>
+        </div>
+        
+        <button id="btnSendReminder" class="smooth-transition w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-100 font-medium py-2.5 px-4 rounded-lg mb-4 border border-zinc-700">
+          Send Reminder
+        </button>
+        
+        <div class="mt-4">
+          <h4 class="text-base font-semibold text-zinc-300 mb-3">Submitted Works:</h4>
+          <div class="bg-zinc-900 p-3 rounded-lg border border-zinc-800 max-h-40 overflow-y-auto custom-scrollbar">
+            <ul id="submissionList" class="space-y-2 text-sm text-zinc-300"></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Communication -->
+      <div class="bg-zinc-800/50 p-5 rounded-xl border border-zinc-700">
+        <div class="flex items-center mb-4">
+          <div class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center mr-3">
+            <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-zinc-100">Communication</h3>
+        </div>
+        
+        <div class="bg-zinc-900 p-3 rounded-lg mb-4 border border-zinc-800 max-h-24 overflow-y-auto custom-scrollbar">
+          <p class="text-xs font-medium text-zinc-500 mb-2">PARENT MESSAGES</p>
+          <div id="teacherMessages" class="text-sm text-zinc-300">No messages</div>
+        </div>
+
+        <textarea id="noticeText" placeholder="Type notice for students & parents..." class="w-full p-3 bg-zinc-900 border border-zinc-700 rounded-lg mb-3 text-zinc-100 placeholder-zinc-500 focus:ring-1 focus:ring-indigo-500 focus:border-transparent" rows="2"></textarea>
+        <button id="btnPostNotice" class="smooth-transition w-full bg-indigo-600 hover:bg-indigo-700 text-zinc-100 font-medium py-2.5 px-4 rounded-lg mb-3">
+          Post Notice
+        </button>
+
+        <textarea id="replyText" placeholder="Reply to parents..." class="w-full p-3 bg-zinc-900 border border-zinc-700 rounded-lg mb-3 text-zinc-100 placeholder-zinc-500 focus:ring-1 focus:ring-indigo-500 focus:border-transparent" rows="2"></textarea>
+        <button id="btnSendReply" class="smooth-transition w-full bg-indigo-600 hover:bg-indigo-700 text-zinc-100 font-medium py-2.5 px-4 rounded-lg">
+          Send Reply
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<!-- Application Modules -->
+<script src="firebase.js"></script>
+<script src="auth/auth.js"></script>
+<script src="attendance.js"></script>
+<script src="submissions.js"></script>
+
+<!-- Teacher Portal Logic -->
+<script>
+document.addEventListener('DOMContentLoaded', async function() {
+  // Protect route - only teachers can access
+  await window.authModule.protectRoute('teacher', async (userData) => {
+    // Update user info display
+    const userInfo = document.getElementById('userInfo');
+    if (userData && userData.name) {
+      userInfo.textContent = `Logged in as: ${userData.name} (${userData.email || ''})`;
+    } else {
+      const user = window.authModule.getCurrentUser();
+      userInfo.textContent = `Logged in as: ${user ? user.email : 'Teacher'}`;
+    }
+
+    // Setup logout button
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      window.authModule.logout();
+    });
+
+    // Import and initialize teacher portal functionality
+    // Use the teacher-specific code from app.js
+    const className = document.getElementById("className");
+    const strength = document.getElementById("strength");
+    const total = document.getElementById("total");
+    const present = document.getElementById("present");
+    const absent = document.getElementById("absent");
+    const presentList = document.getElementById("presentList");
+    const submittedSpan = document.getElementById("submitted");
+    const notSubmitted = document.getElementById("notSubmitted");
+    const submissionList = document.getElementById("submissionList");
+    const noticeText = document.getElementById("noticeText");
+    const replyText = document.getElementById("replyText");
+    const attendanceBtn = document.getElementById("attendanceBtn");
+    const timerDisplay = document.getElementById("timerDisplay");
+
+    let currentClassInfo = { className: '', strength: 0 };
+    let currentDeadlineDate = null;
+    let currentSubmissions = [];
+    const unsubscribeFunctions = {
+      attendanceStatus: null,
+      presentStudents: null,
+      classInfo: null,
+      deadline: null,
+      submissions: null,
+      notice: null,
+      parentMessages: null
+    };
+
+    // Attendance button
+    attendanceBtn.addEventListener("click", async () => {
+      // Check if user is authenticated and is teacher
+      const user = window.authModule.getCurrentUser();
+      if (!user) {
+        alert('You must be logged in to open attendance.');
+        window.location.href = 'login.html';
+        return;
+      }
+      
+      const role = await window.authModule.getUserRole(user.uid);
+      if (role !== 'teacher') {
+        alert('Only teachers can open attendance.');
+        return;
+      }
+
+      attendanceBtn.disabled = true;
+      await window.attendanceModule.openAttendance(120);
+    });
+
+    // Set deadline
+    document.getElementById("btnSetDeadline").addEventListener("click", async function() {
+      const user = window.authModule.getCurrentUser();
+      if (!user) {
+        alert('You must be logged in.');
+        window.location.href = 'login.html';
+        return;
+      }
+      
+      const role = await window.authModule.getUserRole(user.uid);
+      if (role !== 'teacher') {
+        alert('Only teachers can set deadlines.');
+        return;
+      }
+
+      const date = document.getElementById("deadline").value;
+      const description = document.getElementById("taskDescription").value;
+      
+      if (!date) {
+        alert('Please select a deadline date');
+        return;
+      }
+
+      try {
+        await window.submissionsModule.setDeadline(date, description);
+      } catch (error) {
+        console.error('Error setting deadline:', error);
+      }
+    });
+
+    // Post notice
+    document.getElementById("btnPostNotice").addEventListener("click", async function() {
+      const user = window.authModule.getCurrentUser();
+      if (!user) {
+        alert('You must be logged in.');
+        window.location.href = 'login.html';
+        return;
+      }
+      
+      const role = await window.authModule.getUserRole(user.uid);
+      if (role !== 'teacher') {
+        alert('Only teachers can post notices.');
+        return;
+      }
+
+      await window.submissionsModule.postNotice(noticeText.value);
+      noticeText.value = "";
+    });
+
+    // Send reply
+    document.getElementById("btnSendReply").addEventListener("click", async function() {
+      const user = window.authModule.getCurrentUser();
+      if (!user) {
+        alert('You must be logged in.');
+        window.location.href = 'login.html';
+        return;
+      }
+      
+      const role = await window.authModule.getUserRole(user.uid);
+      if (role !== 'teacher') {
+        alert('Only teachers can send replies.');
+        return;
+      }
+
+      await window.submissionsModule.sendParentReply(replyText.value);
+      replyText.value = "";
+    });
+
+    // Send reminder
+    document.getElementById("btnSendReminder").addEventListener("click", function() {
+      alert("Reminder sent to students who haven't submitted!");
+    });
+
+    // Class info updates
+    className.addEventListener("input", () => {
+      window.submissionsModule.updateClassInfo(className.value, strength.value);
+    });
+
+    strength.addEventListener("input", () => {
+      window.submissionsModule.updateClassInfo(className.value, strength.value);
+    });
+
+    // Setup listeners
+    function setupListeners() {
+      // Watch attendance status
+      unsubscribeFunctions.attendanceStatus = window.attendanceModule.watchAttendanceStatus((status) => {
+        attendanceBtn.disabled = status.isOpen;
+        if (status.isOpen && status.remainingSeconds > 0) {
+          timerDisplay.innerHTML = `<span class="bg-green-400 text-zinc-900 px-3 py-1 rounded-full text-sm font-medium">Attendance Open: ${status.remainingSeconds}s</span>`;
+        } else {
+          timerDisplay.innerHTML = `<span class="bg-red-400 text-zinc-900 px-3 py-1 rounded-full text-sm font-medium">Attendance Closed</span>`;
+          if (status.remainingSeconds === 0 && status.isOpen) {
+            window.attendanceModule.closeAttendance();
+          }
+        }
+      });
+
+      // Watch present students
+      const today = window.attendanceModule.getCurrentDate();
+      unsubscribeFunctions.presentStudents = window.attendanceModule.watchPresentStudents(today, (students) => {
+        updateAttendanceDisplay(students);
+      });
+
+      // Watch class info
+      unsubscribeFunctions.classInfo = window.submissionsModule.watchClassInfo((info) => {
+        currentClassInfo = info;
+        className.value = info.className;
+        strength.value = info.strength;
+      });
+
+      // Watch deadline
+      unsubscribeFunctions.deadline = window.submissionsModule.watchDeadline((deadlineData) => {
+        currentDeadlineDate = deadlineData.date;
+        // Update deadline input and description if exists
+        if (deadlineData.date) {
+          document.getElementById("deadline").value = deadlineData.date;
+          if (deadlineData.description) {
+            document.getElementById("taskDescription").value = deadlineData.description;
+          }
+        }
+        if (deadlineData.date) {
+          if (unsubscribeFunctions.submissions) {
+            unsubscribeFunctions.submissions();
+          }
+          unsubscribeFunctions.submissions = window.submissionsModule.watchSubmissions(deadlineData.date, (submissions) => {
+            currentSubmissions = submissions;
+            updateSubmissionDisplay(submissions);
+          });
+        } else {
+          currentSubmissions = [];
+          updateSubmissionDisplay([]);
+        }
+      });
+
+      // Watch notice
+      unsubscribeFunctions.notice = window.submissionsModule.watchNotice((notice) => {
+        // Notice updates will be visible to students/parents
+      });
+
+      // Watch parent messages
+      unsubscribeFunctions.parentMessages = window.submissionsModule.watchParentMessages((messages) => {
+        updateParentMessages(messages);
+      });
+    }
+
+    function updateAttendanceDisplay(presentStudents) {
+      const totalStudents = currentClassInfo.strength || 0;
+      const presentCount = presentStudents.length;
+      const absentCount = Math.max(0, totalStudents - presentCount);
+
+      if (total) total.innerText = totalStudents;
+      if (present) present.innerText = presentCount;
+      if (absent) absent.innerText = absentCount;
+
+      if (presentList) {
+        presentList.innerHTML = "";
+        presentStudents.forEach(name => {
+          const li = document.createElement("li");
+          li.innerText = name;
+          presentList.appendChild(li);
+        });
+      }
+    }
+
+    function updateSubmissionDisplay(submissions) {
+      const totalStudents = currentClassInfo.strength || 0;
+      const submittedCount = submissions.length;
+      const pendingCount = Math.max(0, totalStudents - submittedCount);
+
+      if (submittedSpan) submittedSpan.innerText = submittedCount;
+      if (notSubmitted) notSubmitted.innerText = pendingCount;
+
+      if (submissionList) {
+        submissionList.innerHTML = "";
+        submissions.forEach(sub => {
+          const li = document.createElement("li");
+          li.className = "bg-zinc-800 p-3 rounded-lg border border-zinc-700";
+          let timestampStr = '';
+          if (sub.timestamp && sub.timestamp.toDate) {
+            timestampStr = `<small class="text-zinc-500 text-xs"> - ${sub.timestamp.toDate().toLocaleString()}</small>`;
+          }
+          li.innerHTML = `<strong class="text-zinc-100">${sub.studentName}:</strong>${timestampStr}<br><span class="text-zinc-300">${sub.content || ''}</span>`;
+          submissionList.appendChild(li);
+        });
+      }
+    }
+
+    function updateParentMessages(messages) {
+      const teacherMessagesDiv = document.getElementById("teacherMessages");
+      if (!teacherMessagesDiv) return;
+
+      if (messages.length === 0) {
+        teacherMessagesDiv.innerHTML = "No messages";
+        return;
+      }
+
+      const messagesHTML = messages.map(msg => {
+        const childName = msg.childName || 'Unknown';
+        const messageText = msg.message || '';
+        let timestampStr = '';
+        if (msg.timestamp && msg.timestamp.toDate) {
+          timestampStr = `<small class="text-zinc-500 text-xs"> - ${msg.timestamp.toDate().toLocaleString()}</small>`;
+        }
+        return `<p class="mb-1 bg-zinc-800 p-2 rounded border border-zinc-700"><strong class="text-zinc-100">${childName}:</strong> <span class="text-zinc-300">${messageText}</span>${timestampStr}</p>`;
+      }).join("");
+
+      teacherMessagesDiv.innerHTML = messagesHTML;
+    }
+
+    setupListeners();
+  });
+});
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,237 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DOCERE – Student Portal</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  
+  body {
+    font-family: 'Inter', sans-serif;
+  }
+  
+  /* Smooth transitions */
+  .smooth-transition {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Custom scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgb(39 39 42);
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgb(82 82 91);
+    border-radius: 3px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgb(113 113 122);
+  }
+</style>
+</head>
+<body class="bg-zinc-950 min-h-screen text-zinc-100">
+
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-2xl mx-auto bg-zinc-900 rounded-xl border border-zinc-800 p-6 shadow-md shadow-black/20">
+    <div class="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4">
+      <div>
+        <h2 class="text-2xl font-semibold text-zinc-100">Student Portal</h2>
+        <p id="userInfo" class="text-sm text-zinc-500 mt-1">Loading...</p>
+      </div>
+      <button id="logoutBtn" class="smooth-transition bg-zinc-800 hover:bg-zinc-700 text-zinc-100 font-medium py-2.5 px-6 rounded-lg border border-zinc-700 flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+        </svg>
+        Logout
+      </button>
+    </div>
+
+    <div class="bg-zinc-800/50 p-6 rounded-xl border border-zinc-700 mb-6">
+      <input id="studentName" placeholder="Enter Your Name" class="w-full p-3.5 bg-zinc-900 border border-zinc-700 rounded-lg mb-4 text-zinc-100 placeholder-zinc-500 focus:ring-1 focus:ring-indigo-500 focus:border-transparent">
+      
+      <textarea id="submissionContent" placeholder="Enter your submission content here" class="w-full p-3.5 bg-zinc-900 border border-zinc-700 rounded-lg mb-4 text-zinc-100 placeholder-zinc-500 focus:ring-1 focus:ring-indigo-500 focus:border-transparent" rows="4"></textarea>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <button id="btnMarkSelfPresent" class="smooth-transition bg-indigo-600 hover:bg-indigo-700 text-zinc-100 font-medium py-3.5 px-6 rounded-lg flex items-center justify-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+          </svg>
+          Mark Attendance
+        </button>
+        
+        <button id="btnSubmitWork" class="smooth-transition bg-zinc-800 hover:bg-zinc-700 text-zinc-100 font-medium py-3.5 px-6 rounded-lg border border-zinc-700 flex items-center justify-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+          </svg>
+          Submit Work
+        </button>
+      </div>
+    </div>
+
+    <div class="space-y-4">
+      <div class="bg-zinc-800/50 p-5 rounded-xl border border-zinc-700">
+        <div class="flex items-center gap-2 mb-3">
+          <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+          </svg>
+          <p class="text-sm font-medium text-zinc-400">TASK & DEADLINE</p>
+        </div>
+        <p id="taskDescription" class="text-zinc-300 mb-2"></p>
+        <p id="studentDeadline" class="text-base font-semibold text-indigo-300">Not Set</p>
+      </div>
+      
+      <div class="bg-zinc-800/50 p-5 rounded-xl border border-zinc-700">
+        <div class="flex items-center gap-2 mb-2">
+          <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 110-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 01-1.44-4.282m3.102.069a18.03 18.03 0 01-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 018.835 2.535M10.34 6.66a23.847 23.847 0 008.835-2.535m0 0A23.74 23.74 0 0018.795 3m.38 1.125a23.91 23.91 0 011.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 001.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 010 3.46" />
+          </svg>
+          <p class="text-sm font-medium text-zinc-400">NOTICE BOARD</p>
+        </div>
+        <p id="studentNotice" class="text-zinc-300">No notice</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<!-- Application Modules -->
+<script src="firebase.js"></script>
+<script src="auth/auth.js"></script>
+<script src="attendance.js"></script>
+<script src="submissions.js"></script>
+
+<!-- Student Portal Logic -->
+<script>
+document.addEventListener('DOMContentLoaded', async function() {
+  // Protect route - only students can access
+  await window.authModule.protectRoute('student', async (userData) => {
+    // Update user info display
+    const userInfo = document.getElementById('userInfo');
+    if (userData && userData.name) {
+      userInfo.textContent = `Logged in as: ${userData.name} (${userData.email || ''})`;
+    } else {
+      const user = window.authModule.getCurrentUser();
+      userInfo.textContent = `Logged in as: ${user ? user.email : 'Student'}`;
+    }
+
+    // Setup logout button
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      window.authModule.logout();
+    });
+
+    // Get student name from user data if available, or use email
+    const user = window.authModule.getCurrentUser();
+    const studentNameInput = document.getElementById("studentName");
+    if (userData && userData.name) {
+      studentNameInput.value = userData.name;
+    } else if (user) {
+      studentNameInput.value = user.email.split('@')[0];
+    }
+
+    const unsubscribeFunctions = {};
+
+    // Mark attendance button
+    document.getElementById("btnMarkSelfPresent").addEventListener("click", async function() {
+      const user = window.authModule.getCurrentUser();
+      if (!user) {
+        alert('You must be logged in to mark attendance.');
+        window.location.href = 'login.html';
+        return;
+      }
+      
+      const role = await window.authModule.getUserRole(user.uid);
+      if (role !== 'student') {
+        alert('Only students can mark attendance.');
+        return;
+      }
+
+      const studentName = studentNameInput.value.trim();
+      if (!studentName) {
+        alert('Please enter your name.');
+        return;
+      }
+
+      const success = await window.attendanceModule.markStudentPresent(studentName);
+      if (success) {
+        // Don't clear name if auto-filled from user data
+        if (!userData || !userData.name) {
+          studentNameInput.value = "";
+        }
+      }
+    });
+
+    // Submit work button
+    document.getElementById("btnSubmitWork").addEventListener("click", async function() {
+      const user = window.authModule.getCurrentUser();
+      if (!user) {
+        alert('You must be logged in to submit work.');
+        window.location.href = 'login.html';
+        return;
+      }
+      
+      const role = await window.authModule.getUserRole(user.uid);
+      if (role !== 'student') {
+        alert('Only students can submit work.');
+        return;
+      }
+
+      const studentName = studentNameInput.value.trim();
+      const content = document.getElementById("submissionContent").value.trim();
+      
+      const success = await window.submissionsModule.submitWork(studentName, content);
+      if (success) {
+        document.getElementById("submissionContent").value = "";
+      }
+    });
+
+    // Watch deadline
+    unsubscribeFunctions.deadline = window.submissionsModule.watchDeadline((deadlineData) => {
+      const studentDeadline = document.getElementById("studentDeadline");
+      const taskDescription = document.getElementById("taskDescription");
+      if (deadlineData.date) {
+        studentDeadline.innerText = deadlineData.date;
+        if (deadlineData.description) {
+          taskDescription.innerText = deadlineData.description;
+        } else {
+          taskDescription.innerText = '';
+        }
+      } else {
+        studentDeadline.innerText = "Not Set";
+        taskDescription.innerText = '';
+      }
+    });
+
+    // Watch notice
+    unsubscribeFunctions.notice = window.submissionsModule.watchNotice((notice) => {
+      document.getElementById("studentNotice").innerText = notice;
+    });
+
+    // Watch attendance status (to show if attendance is open)
+    unsubscribeFunctions.attendanceStatus = window.attendanceModule.watchAttendanceStatus((status) => {
+      const btn = document.getElementById("btnMarkSelfPresent");
+      if (status.isOpen) {
+        btn.classList.remove('opacity-50');
+        btn.disabled = false;
+      } else {
+        // Button still clickable but will show alert
+      }
+    });
+  });
+});
+</script>
+
+</body>
+
+</html>
