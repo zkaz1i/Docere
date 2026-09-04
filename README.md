@@ -77,42 +77,6 @@ Docere is a web-based application designed for teachers to manage classroom acti
 
 3. **Select your role** and start using the app!
 
-### Firebase Setup
-
-**Important**: You must configure Firebase before using the application.
-
-See **[FIREBASE_SETUP.md](FIREBASE_SETUP.md)** for detailed step-by-step instructions on:
-- Creating a Firebase project
-- Enabling Firestore
-- Setting security rules
-- Configuring the application
-- Troubleshooting
-
-## Deployment
-
-### Netlify (Recommended)
-
-The application is fully compatible with Netlify static hosting:
-
-1. Push code to a Git repository (GitHub, GitLab, etc.)
-2. In Netlify:
-   - Add new site → Import existing project
-   - Connect repository
-   - Build command: (leave empty - static site)
-   - Publish directory: `Docere` (or adjust based on your structure)
-   - Deploy!
-
-3. **Important**: After deployment, update Firebase configuration in `firebase.js` if needed (or use environment variables)
-
-### Other Static Hosts
-
-The application works with any static web host:
-- GitHub Pages
-- Vercel
-- Firebase Hosting
-- AWS S3 + CloudFront
-- Any other static hosting service
-
 ## Project Structure
 
 ```
@@ -140,17 +104,3 @@ Key collections:
 - `notices/current` - Current notice
 - `parentMessages/{id}` - Messages from parents
 - `parentReplies/latest` - Teacher replies
-
-## Troubleshooting
-
-See `FIREBASE_SETUP.md` for detailed troubleshooting guide.
-
-Common issues:
-- **"Firebase SDK not loaded"**: Check script order in `index.html`
-- **"Permission denied"**: Check Firestore security rules
-- **No real-time updates**: Verify Firestore listeners are set up correctly
-
-## License
-
-This project is open source and available for educational use.
->>>>>>> aff51497ba902a551aef5b49d53f03e5dd5623e9
